@@ -1,0 +1,30 @@
+name: HeavenzFire Browser Adapter Tests
+
+on:
+  push:
+    paths:
+      - 'heavenzfire/**'
+      - '.github/workflows/heavenzfire-browser-tests.yml'
+  pull_request:
+    paths:
+      - 'heavenzfire/**'
+      - '.github/workflows/heavenzfire-browser-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  security-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run browser request validation tests
+        run: node heavenzfire/test-security.js
+      - name: Syntax-check runtime
+        run: node --check heavenzfire/server.js
